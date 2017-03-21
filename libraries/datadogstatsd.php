@@ -162,11 +162,14 @@ class Datadogstatsd {
 
         if (empty($sampledData)) { return; }
 
-        foreach ($sampledData as $stat => $value) {
-            if ($tags !== NULL && is_array($tags) && count($tags) > 0) {
-                // add pod_name as a default tag
-                $tags["pod_name"] = gethostname();
+        $pod_name = gethostname();
+        if $tags == null || is_array($tags) {
+            // add pod_name as a default tag
+            $tags["pod_name"] = $pod_name;
+        }
 
+        foreach ($sampledData as $stat => $value) {
+            if ($tags !== null && is_array($tags) && count($tags) > 0) {
                 $value .= '|';
                 foreach ($tags as $tag_key => $tag_val) {
                     $value .= '#' . $tag_key . ':' . $tag_val . ',';
