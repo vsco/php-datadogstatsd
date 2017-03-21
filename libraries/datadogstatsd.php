@@ -164,6 +164,9 @@ class Datadogstatsd {
 
         foreach ($sampledData as $stat => $value) {
             if ($tags !== NULL && is_array($tags) && count($tags) > 0) {
+                // add pod_name as a default tag
+                $tags["pod_name"] = gethostname();
+
                 $value .= '|';
                 foreach ($tags as $tag_key => $tag_val) {
                     $value .= '#' . $tag_key . ':' . $tag_val . ',';
