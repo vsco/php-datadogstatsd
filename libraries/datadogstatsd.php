@@ -162,9 +162,11 @@ class Datadogstatsd {
 
         if (empty($sampledData)) { return; }
 
+        // VSCO Fork
+        // Add `pod_name` (k8s pod), and `track` (stable,canary) tags to all metrics
         if ($tags == null || is_array($tags)) {
-            // add pod_name as a default tag
-            $tags["pod_name"] = gethostname();
+            $tags['pod_name'] = gethostname();
+            $tags['track'] = getenv('TRACK') ?: 'stable';
         }
 
         foreach ($sampledData as $stat => $value) {
